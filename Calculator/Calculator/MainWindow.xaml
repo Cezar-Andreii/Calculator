@@ -5,8 +5,65 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Calculator" Height="600" Width="350" ResizeMode="NoResize" Background="#F2F2F2">
+    <Grid Margin="10">
+        <!-- Afișaj -->
+        <TextBox x:Name="Display" 
+                 Text="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}" 
+                 HorizontalAlignment="Stretch" 
+                 VerticalAlignment="Top" 
+                 FontSize="30" 
+                 FontWeight="Bold"
+                 TextAlignment="Right" 
+                 Margin="5" 
+                 IsReadOnly="True" 
+                 Background="White" 
+                 BorderBrush="Gray" 
+                 BorderThickness="1" />
 
+        <!-- Butoanele -->
+        <UniformGrid Rows="8" Columns="4" Margin="0,80,0,0">
+            <!-- Linie operații speciale -->
+            <Button Content="MC" Command="{Binding MemoryClearCommand}" />
+            <Button Content="MR" Command="{Binding MemoryRecallCommand}" />
+            <Button Content="MS" Command="{Binding MemoryStoreCommand}" />
+            <Button Content="M+" Command="{Binding MemoryAddCommand}" />
+            <Button Content="M-" Command="{Binding MemorySubtractCommand}" />
+
+            <!-- Linie control -->
+            <Button Content="Backspace" Command="{Binding BackspaceCommand}" />
+            <Button Content="CE" Command="{Binding ClearEntryCommand}" />
+            <Button Content="C" Command="{Binding ClearCommand}" />
+
+            <!-- Linie operații matematice -->
+            <Button Content="%" Command="{Binding OperationCommand}" CommandParameter="%" />
+            <Button Content="√" Command="{Binding OperationCommand}" CommandParameter="sqrt" />
+            <Button Content="x²" Command="{Binding OperationCommand}" CommandParameter="square" />
+            <Button Content="1/x" Command="{Binding OperationCommand}" CommandParameter="reciprocal" />
+
+            <!-- Linie numerică -->
+            <Button Content="7" Command="{Binding DigitCommand}" CommandParameter="7" />
+            <Button Content="8" Command="{Binding DigitCommand}" CommandParameter="8" />
+            <Button Content="9" Command="{Binding DigitCommand}" CommandParameter="9" />
+            <Button Content="÷" Command="{Binding OperationCommand}" CommandParameter="/" />
+
+            <Button Content="4" Command="{Binding DigitCommand}" CommandParameter="4" />
+            <Button Content="5" Command="{Binding DigitCommand}" CommandParameter="5" />
+            <Button Content="6" Command="{Binding DigitCommand}" CommandParameter="6" />
+            <Button Content="×" Command="{Binding OperationCommand}" CommandParameter="*" />
+
+            <Button Content="1" Command="{Binding DigitCommand}" CommandParameter="1" />
+            <Button Content="2" Command="{Binding DigitCommand}" CommandParameter="2" />
+            <Button Content="3" Command="{Binding DigitCommand}" CommandParameter="3" />
+            <Button Content="−" Command="{Binding OperationCommand}" CommandParameter="-" />
+
+            <Button Content="±" Command="{Binding NegateCommand}" />
+            <Button Content="0" Command="{Binding DigitCommand}" CommandParameter="0" />
+            <Button Content="." Command="{Binding DecimalPointCommand}" />
+            <Button Content="+" Command="{Binding OperationCommand}" CommandParameter="+" />
+
+            <Button Content="=" Command="{Binding EqualsCommand}" />
+            <Button Content="M>" Command="{Binding MemoryStackCommand}" />
+        </UniformGrid>
     </Grid>
 </Window>
