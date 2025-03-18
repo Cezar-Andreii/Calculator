@@ -86,14 +86,9 @@ Contribuțiile sunt binevenite! Te rugăm să:
 4. Push la branch (`git push origin feature/AmazingFeature`)
 5. Deschide un Pull Request
 
-## Licență
-
-Acest proiect este licențiat sub licența MIT - vezi fișierul [LICENSE](LICENSE) pentru detalii.
-
 ## Autor
 
 Dragomir Cezar Andrei
-- Grupa: 10LF232
 
 ## Recunoașteri
 
