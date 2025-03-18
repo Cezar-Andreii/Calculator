@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-E:\MAP\Calculator - Copy\Calculator\obj\Debug\net8.0-windows\
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\
 Calculator
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-E:\MAP\Calculator - Copy\Calculator\App.xaml
-11407045341
+E:\MAP\Calculator\Calculator\Calculator\App.xaml
+21681252471
 
-6-548089027
+101991311180
 198-352714763
-MainWindow.xaml;
+MainWindow.xaml;MemoryStackWindow.xaml;
 
 False
 

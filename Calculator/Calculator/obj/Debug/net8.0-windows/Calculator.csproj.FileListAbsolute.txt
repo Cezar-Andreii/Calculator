@@ -40,3 +40,28 @@ E:\MAP\Calculator - Copy\Calculator\obj\Debug\net8.0-windows\refint\Calculator.d
 E:\MAP\Calculator - Copy\Calculator\obj\Debug\net8.0-windows\Calculator.pdb
 E:\MAP\Calculator - Copy\Calculator\obj\Debug\net8.0-windows\Calculator.genruntimeconfig.cache
 E:\MAP\Calculator - Copy\Calculator\obj\Debug\net8.0-windows\ref\Calculator.dll
+E:\MAP\Calculator\Calculator\Calculator\bin\Debug\net8.0-windows\Calculator.exe
+E:\MAP\Calculator\Calculator\Calculator\bin\Debug\net8.0-windows\Calculator.deps.json
+E:\MAP\Calculator\Calculator\Calculator\bin\Debug\net8.0-windows\Calculator.runtimeconfig.json
+E:\MAP\Calculator\Calculator\Calculator\bin\Debug\net8.0-windows\Calculator.dll
+E:\MAP\Calculator\Calculator\Calculator\bin\Debug\net8.0-windows\Calculator.pdb
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\App.baml
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\MainWindow.g.cs
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\App.g.cs
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator_MarkupCompile.cache
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator_MarkupCompile.lref
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\MainWindow.baml
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.g.resources
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.GeneratedMSBuildEditorConfig.editorconfig
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.AssemblyInfoInputs.cache
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.AssemblyInfo.cs
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.csproj.CoreCompileInputs.cache
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.sourcelink.json
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.dll
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\refint\Calculator.dll
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.pdb
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.genruntimeconfig.cache
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\ref\Calculator.dll
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\MemoryStackWindow.baml
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\MemoryStackWindow.g.cs
+E:\MAP\Calculator\Calculator\Calculator\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs

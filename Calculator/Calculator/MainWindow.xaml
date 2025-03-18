@@ -5,65 +5,356 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="Calculator" Height="600" Width="350" ResizeMode="NoResize" Background="#F2F2F2">
-    <Grid Margin="10">
-        <!-- Afișaj -->
-        <TextBox x:Name="Display" 
-                 Text="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}" 
-                 HorizontalAlignment="Stretch" 
-                 VerticalAlignment="Top" 
-                 FontSize="30" 
-                 FontWeight="Bold"
-                 TextAlignment="Right" 
-                 Margin="5" 
-                 IsReadOnly="True" 
-                 Background="White" 
-                 BorderBrush="Gray" 
-                 BorderThickness="1" />
+        Title="Calculator"
+        Height="600"
+        Width="350"
+        ResizeMode="NoResize"
+        Background="#F0F0F0"
+        KeyDown="Window_KeyDown">
+        <Window.Resources>
+                <local:ModeToVisibilityConverter x:Key="ModeToVisibilityConverter"/>
+                <local:BaseToCheckedConverter x:Key="BaseToCheckedConverter"/>
 
-        <!-- Butoanele -->
-        <UniformGrid Rows="8" Columns="4" Margin="0,80,0,0">
-            <!-- Linie operații speciale -->
-            <Button Content="MC" Command="{Binding MemoryClearCommand}" />
-            <Button Content="MR" Command="{Binding MemoryRecallCommand}" />
-            <Button Content="MS" Command="{Binding MemoryStoreCommand}" />
-            <Button Content="M+" Command="{Binding MemoryAddCommand}" />
-            <Button Content="M-" Command="{Binding MemorySubtractCommand}" />
+                <!-- Stiluri pentru butoane -->
+                <Style x:Key="CalculatorButtonStyle"
+                       TargetType="Button">
+                        <Setter Property="Margin"
+                                Value="2"/>
+                        <Setter Property="FontSize"
+                                Value="16"/>
+                        <Setter Property="Background"
+                                Value="#FFFFFF"/>
+                        <Setter Property="Foreground"
+                                Value="#333333"/>
+                        <Setter Property="BorderBrush"
+                                Value="#E0E0E0"/>
+                        <Setter Property="BorderThickness"
+                                Value="1"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="4">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                 Value="True">
+                                                                <Setter Property="Background"
+                                                                        Value="#F0F0F0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed"
+                                                                 Value="True">
+                                                                <Setter Property="Background"
+                                                                        Value="#E0E0E0"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
 
-            <!-- Linie control -->
-            <Button Content="Backspace" Command="{Binding BackspaceCommand}" />
-            <Button Content="CE" Command="{Binding ClearEntryCommand}" />
-            <Button Content="C" Command="{Binding ClearCommand}" />
+                <!-- Stil pentru butoane numerice -->
+                <Style x:Key="NumberButtonStyle"
+                       TargetType="Button"
+                       BasedOn="{StaticResource CalculatorButtonStyle}">
+                        <Setter Property="Background"
+                                Value="#FFFFFF"/>
+                </Style>
 
-            <!-- Linie operații matematice -->
-            <Button Content="%" Command="{Binding OperationCommand}" CommandParameter="%" />
-            <Button Content="√" Command="{Binding OperationCommand}" CommandParameter="sqrt" />
-            <Button Content="x²" Command="{Binding OperationCommand}" CommandParameter="square" />
-            <Button Content="1/x" Command="{Binding OperationCommand}" CommandParameter="reciprocal" />
+                <!-- Stil pentru butoane de operații -->
+                <Style x:Key="OperationButtonStyle"
+                       TargetType="Button"
+                       BasedOn="{StaticResource CalculatorButtonStyle}">
+                        <Setter Property="Background"
+                                Value="#F8F8F8"/>
+                </Style>
 
-            <!-- Linie numerică -->
-            <Button Content="7" Command="{Binding DigitCommand}" CommandParameter="7" />
-            <Button Content="8" Command="{Binding DigitCommand}" CommandParameter="8" />
-            <Button Content="9" Command="{Binding DigitCommand}" CommandParameter="9" />
-            <Button Content="÷" Command="{Binding OperationCommand}" CommandParameter="/" />
+                <!-- Stil pentru butoane de memorie -->
+                <Style x:Key="MemoryButtonStyle"
+                       TargetType="Button"
+                       BasedOn="{StaticResource CalculatorButtonStyle}">
+                        <Setter Property="Background"
+                                Value="#F0F0F0"/>
+                        <Setter Property="FontSize"
+                                Value="14"/>
+                </Style>
 
-            <Button Content="4" Command="{Binding DigitCommand}" CommandParameter="4" />
-            <Button Content="5" Command="{Binding DigitCommand}" CommandParameter="5" />
-            <Button Content="6" Command="{Binding DigitCommand}" CommandParameter="6" />
-            <Button Content="×" Command="{Binding OperationCommand}" CommandParameter="*" />
+                <!-- Stil pentru butonul egal -->
+                <Style x:Key="EqualButtonStyle"
+                       TargetType="Button"
+                       BasedOn="{StaticResource CalculatorButtonStyle}">
+                        <Setter Property="Background"
+                                Value="#007ACC"/>
+                        <Setter Property="Foreground"
+                                Value="White"/>
+                        <Setter Property="BorderBrush"
+                                Value="#0066AA"/>
+                </Style>
 
-            <Button Content="1" Command="{Binding DigitCommand}" CommandParameter="1" />
-            <Button Content="2" Command="{Binding DigitCommand}" CommandParameter="2" />
-            <Button Content="3" Command="{Binding DigitCommand}" CommandParameter="3" />
-            <Button Content="−" Command="{Binding OperationCommand}" CommandParameter="-" />
+                <!-- Stil pentru RadioButton -->
+                <Style x:Key="BaseRadioButtonStyle"
+                       TargetType="RadioButton">
+                        <Setter Property="Margin"
+                                Value="5,0"/>
+                        <Setter Property="Padding"
+                                Value="5,2"/>
+                        <Setter Property="Background"
+                                Value="#FFFFFF"/>
+                        <Setter Property="BorderBrush"
+                                Value="#CCCCCC"/>
+                        <Setter Property="BorderThickness"
+                                Value="1"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="3">
+                                                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                                          HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsChecked"
+                                                                 Value="True">
+                                                                <Setter Property="Background"
+                                                                        Value="#007ACC"/>
+                                                                <Setter Property="Foreground"
+                                                                        Value="White"/>
+                                                                <Setter Property="BorderBrush"
+                                                                        Value="#0066AA"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+        </Window.Resources>
 
-            <Button Content="±" Command="{Binding NegateCommand}" />
-            <Button Content="0" Command="{Binding DigitCommand}" CommandParameter="0" />
-            <Button Content="." Command="{Binding DecimalPointCommand}" />
-            <Button Content="+" Command="{Binding OperationCommand}" CommandParameter="+" />
+        <DockPanel>
+                <Menu DockPanel.Dock="Top"
+                      Background="#F8F8F8"
+                      BorderBrush="#E0E0E0"
+                      BorderThickness="0,0,0,1">
+                        <MenuItem Header="File">
+                                <MenuItem Header="Cut"
+                                          Command="{Binding CutCommand}"
+                                          InputGestureText="Ctrl+X"/>
+                                <MenuItem Header="Copy"
+                                          Command="{Binding CopyCommand}"
+                                          InputGestureText="Ctrl+C"/>
+                                <MenuItem Header="Paste"
+                                          Command="{Binding PasteCommand}"
+                                          InputGestureText="Ctrl+V"/>
+                                <Separator/>
+                                <MenuItem Header="Standard"
+                                          Command="{Binding ChangeModeCommand}"
+                                          CommandParameter="Standard"/>
+                                <MenuItem Header="Programmer"
+                                          Command="{Binding ChangeModeCommand}"
+                                          CommandParameter="Programmer"/>
+                                <Separator/>
+                                <MenuItem Header="Digit Grouping"
+                                          Command="{Binding DigitGroupingCommand}"
+                                          IsCheckable="True"
+                                          IsChecked="{Binding DigitGroupingEnabled}"/>
+                        </MenuItem>
+                        <MenuItem Header="Help">
+                                <MenuItem Header="About"
+                                          Command="{Binding AboutCommand}"/>
+                        </MenuItem>
+                </Menu>
 
-            <Button Content="=" Command="{Binding EqualsCommand}" />
-            <Button Content="M>" Command="{Binding MemoryStackCommand}" />
-        </UniformGrid>
-    </Grid>
+                <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Baze numerice -->
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal"
+                                    Margin="0,0,0,10"
+                                    Visibility="{Binding CurrentMode, Converter={StaticResource ModeToVisibilityConverter}, ConverterParameter=Programmer}">
+                                <RadioButton Content="HEX"
+                                             Style="{StaticResource BaseRadioButtonStyle}"
+                                             Command="{Binding ChangeBaseCommand}"
+                                             CommandParameter="Hexadecimal"
+                                             IsChecked="{Binding CurrentBase, Converter={StaticResource BaseToCheckedConverter}, ConverterParameter=Hexadecimal}"/>
+                                <RadioButton Content="DEC"
+                                             Style="{StaticResource BaseRadioButtonStyle}"
+                                             Command="{Binding ChangeBaseCommand}"
+                                             CommandParameter="Decimal"
+                                             IsChecked="{Binding CurrentBase, Converter={StaticResource BaseToCheckedConverter}, ConverterParameter=Decimal}"/>
+                                <RadioButton Content="OCT"
+                                             Style="{StaticResource BaseRadioButtonStyle}"
+                                             Command="{Binding ChangeBaseCommand}"
+                                             CommandParameter="Octal"
+                                             IsChecked="{Binding CurrentBase, Converter={StaticResource BaseToCheckedConverter}, ConverterParameter=Octal}"/>
+                                <RadioButton Content="BIN"
+                                             Style="{StaticResource BaseRadioButtonStyle}"
+                                             Command="{Binding ChangeBaseCommand}"
+                                             CommandParameter="Binary"
+                                             IsChecked="{Binding CurrentBase, Converter={StaticResource BaseToCheckedConverter}, ConverterParameter=Binary}"/>
+                        </StackPanel>
+
+                        <!-- Afișaj -->
+                        <Border Grid.Row="1"
+                                Background="White"
+                                BorderBrush="#E0E0E0"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Margin="0,0,0,10">
+                                <StackPanel>
+                                        <TextBlock Text="{Binding OperationDisplay}"
+                                                   FontSize="16"
+                                                   Foreground="Gray"
+                                                   TextAlignment="Right"
+                                                   Margin="10,5,10,0"/>
+                                        <TextBox x:Name="Display"
+                                                 Text="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
+                                                 FontSize="30"
+                                                 FontWeight="Bold"
+                                                 TextAlignment="Right"
+                                                 Margin="10,5"
+                                                 IsReadOnly="True"
+                                                 BorderThickness="0"
+                                                 Background="Transparent"/>
+                                </StackPanel>
+                        </Border>
+
+                        <!-- Butoanele -->
+                        <UniformGrid Grid.Row="2"
+                                     Rows="8"
+                                     Columns="4">
+                                <!-- Butoane memorie -->
+                                <Button Content="MC"
+                                        Style="{StaticResource MemoryButtonStyle}"
+                                        Command="{Binding MemoryClearCommand}"/>
+                                <Button Content="MR"
+                                        Style="{StaticResource MemoryButtonStyle}"
+                                        Command="{Binding MemoryRecallCommand}"/>
+                                <Button Content="MS"
+                                        Style="{StaticResource MemoryButtonStyle}"
+                                        Command="{Binding MemoryStoreCommand}"/>
+                                <Button Content="M+"
+                                        Style="{StaticResource MemoryButtonStyle}"
+                                        Command="{Binding MemoryAddCommand}"/>
+                                <Button Content="M-"
+                                        Style="{StaticResource MemoryButtonStyle}"
+                                        Command="{Binding MemorySubtractCommand}"/>
+
+                                <!-- Butoane control -->
+                                <Button Content="⌫"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding BackspaceCommand}"/>
+                                <Button Content="CE"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding ClearEntryCommand}"/>
+                                <Button Content="C"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding ClearCommand}"/>
+
+                                <!-- Operații matematice -->
+                                <Button Content="%"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding OperationCommand}"
+                                        CommandParameter="%"/>
+                                <Button Content="√"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding OperationCommand}"
+                                        CommandParameter="sqrt"/>
+                                <Button Content="x²"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding OperationCommand}"
+                                        CommandParameter="square"/>
+                                <Button Content="1/x"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding OperationCommand}"
+                                        CommandParameter="reciprocal"/>
+
+                                <!-- Numere și operații -->
+                                <Button Content="7"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="7"/>
+                                <Button Content="8"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="8"/>
+                                <Button Content="9"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="9"/>
+                                <Button Content="÷"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding OperationCommand}"
+                                        CommandParameter="/"/>
+
+                                <Button Content="4"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="4"/>
+                                <Button Content="5"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="5"/>
+                                <Button Content="6"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="6"/>
+                                <Button Content="×"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding OperationCommand}"
+                                        CommandParameter="*"/>
+
+                                <Button Content="1"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="1"/>
+                                <Button Content="2"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="2"/>
+                                <Button Content="3"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="3"/>
+                                <Button Content="−"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding OperationCommand}"
+                                        CommandParameter="-"/>
+
+                                <Button Content="±"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding NegateCommand}"/>
+                                <Button Content="0"
+                                        Style="{StaticResource NumberButtonStyle}"
+                                        Command="{Binding DigitCommand}"
+                                        CommandParameter="0"/>
+                                <Button Content="."
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding DecimalPointCommand}"/>
+                                <Button Content="+"
+                                        Style="{StaticResource OperationButtonStyle}"
+                                        Command="{Binding OperationCommand}"
+                                        CommandParameter="+"/>
+
+                                <Button Content="="
+                                        Style="{StaticResource EqualButtonStyle}"
+                                        Command="{Binding EqualsCommand}"
+                                        Grid.ColumnSpan="2"/>
+                                <Button Content="M>"
+                                        Style="{StaticResource MemoryButtonStyle}"
+                                        Command="{Binding MemoryStackCommand}"
+                                        Grid.ColumnSpan="2"/>
+                        </UniformGrid>
+                </Grid>
+        </DockPanel>
 </Window>

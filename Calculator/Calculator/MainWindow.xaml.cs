@@ -16,10 +16,22 @@ namespace Calculator
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CalculatorViewModel viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new CalculatorViewModel();
+            viewModel = new CalculatorViewModel();
+            DataContext = viewModel;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (viewModel.KeyPressCommand.CanExecute(e))
+            {
+                viewModel.KeyPressCommand.Execute(e);
+                e.Handled = true;
+            }
         }
     }
 }

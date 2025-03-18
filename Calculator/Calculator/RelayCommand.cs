@@ -1,22 +1,61 @@
 ﻿using System;
 using System.Windows.Input;
 
-public class RelayCommand : ICommand
+namespace Calculator
 {
-    private readonly Action<object> _execute;
-    private readonly Func<object, bool> _canExecute;
-
-    public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+    public class RelayCommand : ICommand
     {
-        _execute = execute;
-        _canExecute = canExecute;
+        private readonly Action<object> execute;
+        private readonly Func<object, bool> canExecute;
+
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        {
+            this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            this.canExecute = canExecute;
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return canExecute == null || canExecute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            execute(parameter);
+        }
     }
 
-    public bool CanExecute(object parameter) => _canExecute == null || _canExecute(parameter);
+    public class RelayCommand<T> : ICommand
+    {
+        private readonly Action<T> execute;
+        private readonly Func<T, bool> canExecute;
 
-    public void Execute(object parameter) => _execute(parameter);
+        public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
+        {
+            this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            this.canExecute = canExecute;
+        }
 
-    public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
-    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        public bool CanExecute(object parameter)
+        {
+            return canExecute == null || canExecute((T)parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            execute((T)parameter);
+        }
+    }
 }
